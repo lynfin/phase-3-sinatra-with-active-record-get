@@ -14,6 +14,10 @@ class ApplicationController < Sinatra::Base
     game = Game.find(params[:id])
 
     # include associated reviews in the JSON response
-    game.to_json(include: :reviews)
+    game.to_json(only: %i[id title genre price], include: {
+                   reviews: { only: %i[comment score], include: {
+                     user: { only: [:name] }
+                   } }
+                 })
   end
 end
