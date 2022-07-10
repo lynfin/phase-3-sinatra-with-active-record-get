@@ -8,4 +8,12 @@ class ApplicationController < Sinatra::Base
     games = Game.all.order(:title)
     games.to_json
   end
+
+  # use the :id syntax to create a dynamic route
+  get '/games/:id' do
+    game = Game.find(params[:id])
+
+    # include associated reviews in the JSON response
+    game.to_json(include: :reviews)
+  end
 end
